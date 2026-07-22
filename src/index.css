@@ -23,3 +23,12 @@ body {
 #root {
   min-height: 100vh;
 }
+.task-summary {
+  display: flex;
+  gap: 24px;
+  margin-bottom: 16px;
+  padding: 12px 0;
+  border-bottom: 1px solid #e0e0e0;
+  font-size: 14px;
+  color: #444;
+}

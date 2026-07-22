@@ -59,6 +59,8 @@ function AppRoutes() {
           <Route path="/tasks/create" element={<ProtectedRoute permissions={['tasks.manage']}><CreateTask /></ProtectedRoute>} />
         </Route>
         <Route path="*" element={<Navigate to="/dashboard" replace />} />
+        <Route path="/tasks" element={<AllTasks />} />
+        <Route path="/tasks/create" element={<CreateTask />} />
       </Routes>
     </BrowserRouter>
   );

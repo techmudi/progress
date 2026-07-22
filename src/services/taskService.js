@@ -1,15 +1,34 @@
-import { httpClient } from './httpClient';
+const BASE_URL = "http://192.168.2.24:8014/api"; // ← change 5000 to your backend port
 
-export async function getUpcomingTasks(filters = {}, options = {}) {
-  const response = await httpClient.get('/tasks', {
-    params: filters,
-    signal: options.signal,
+export async function fetchTasks() {
+  const response = await fetch(`${BASE_URL}/tasks`);
+  if (!response.ok) throw new Error("Failed to fetch tasks");
+  return response.json();
+}
+
+export async function createTask(task) {
+  const response = await fetch(`${BASE_URL}/tasks`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(task),
   });
+  if (!response.ok) throw new Error("Failed to create task");
+  return response.json();
+}
 
-  return {
-    data: response.data || [],
-    meta: response.meta,
-    links: response.links,
-    message: response.message,
-  };
+export async function updateTask(id, updates) {
+  const response = await fetch(`${BASE_URL}/tasks/${id}`, {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(updates),
+  });
+  if (!response.ok) throw new Error("Failed to update task");
+  return response.json();
+}
+
+export async function deleteTask(id) {
+  const response = await fetch(`${BASE_URL}/tasks/${id}`, {
+    method: "DELETE",
+  });
+  if (!response.ok) throw new Error("Failed to delete task");
 }
