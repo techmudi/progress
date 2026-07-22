@@ -59,6 +59,7 @@ function UserDetails() {
 
     try {
       const result = await getUser(id, signal);
+      console.log("API Response:", result);
       setUser(result.user);
     } catch (caught) {
       if (caught?.type !== 'cancelled') {
@@ -141,7 +142,16 @@ function UserDetails() {
       </Paper>
     );
   }
-
+if (!user) {
+    return (
+      <Paper sx={{ p: 3, borderRadius: 3 }}>
+        <Typography variant="h6">
+          User not found.
+          </Typography>
+        <Button variant="outlined" onClick={() => navigate('/users')} sx={{ mt: 2 }}>Back to Users</Button>
+      </Paper>
+    );
+  }
   return (
     <Box>
       <Paper sx={{ p: 3, borderRadius: 3 }}>
