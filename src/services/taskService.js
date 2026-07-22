@@ -1,6 +1,6 @@
 const BASE_URL = "http://192.168.2.24:8014/api";
 
-
+export { getTasks as fetchTasks };
 export async function getTasks(){
   const response = await fetch('${BASE_URL}/tasks ');
   if (!response.ok) {
