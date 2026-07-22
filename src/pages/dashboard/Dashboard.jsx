@@ -28,7 +28,7 @@ import {
 import { useAuth } from '../../context/AuthContext';
 import { getManagementDashboard } from '../../services/dashboardService';
 import { getProjectProgress } from '../../services/reportService';
-import { getUpcomingTasks } from '../../services/taskService';
+import { getTasks } from '../../services/taskService';
 import {
   formatDateTime,
   formatNumber,
@@ -177,7 +177,7 @@ function Dashboard() {
       setDeadlinesState((current) => ({ ...current, loading: true, error: null }));
 
       try {
-        const result = await getUpcomingTasks(
+        const result = await getTasks(
           {
             status: 'active',
             sort: 'due_at',
