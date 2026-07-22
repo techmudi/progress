@@ -30,3 +30,16 @@ export async function createTask(taskData) {
 
   return response.json();
 }
+export async function updateTask(id, taskData) {
+  const response = await fetch(`${BASE_URL}/tasks/${id}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(taskData),
+  });
+
+  if (!response.ok) throw new Error("Failed to update task");
+
+  return response.json();
+}
