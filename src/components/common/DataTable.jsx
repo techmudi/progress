@@ -1,45 +1,77 @@
 import { Paper, Skeleton, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TableSortLabel } from '@mui/material';
 
-function DataTable({ columns, rows, loading = false, sortField, sortDirection = 'asc', onSort, getRowId, ariaLabel = 'Data table' }) {
+function DataTable({
+  columns = [],
+  rows,
+  data,
+  loading = false,
+  sortField,
+  sortDirection = 'asc',
+  onSort,
+  getRowId,
+  renderActions,
+  ariaLabel = 'Data table',
+}) {
+  // `data` and `{ key, label }` are supported for the older task page while
+  // the rest of the app uses `rows` and `{ field, headerName }`.
+  const tableRows = rows || data || [];
+  const getColumnField = (column) => column.field || column.key;
+  const getRowKey = (row, index) => getRowId ? getRowId(row) : row.id || index;
+
   return (
     <TableContainer component={Paper} sx={{ borderRadius: 2, mt: 2 }}>
       <Table aria-label={ariaLabel}>
         <TableHead>
           <TableRow>
-            {columns.map((column) => (
-              <TableCell key={column.field}>
+            {columns.map((column, index) => {
+              const field = getColumnField(column);
+
+              return (
+              <TableCell key={field || `column-${index}`}>
                 {column.sortable && onSort ? (
                   <TableSortLabel
-                    active={sortField === (column.sortField || column.field)}
-                    direction={sortField === (column.sortField || column.field) ? sortDirection : 'asc'}
-                    onClick={() => onSort(column.sortField || column.field)}
+                    active={sortField === (column.sortField || field)}
+                    direction={sortField === (column.sortField || field) ? sortDirection : 'asc'}
+                    onClick={() => onSort(column.sortField || field)}
                   >
-                    {column.headerName}
+                    {column.headerName || column.label}
                   </TableSortLabel>
-                ) : column.headerName}
+                ) : (column.headerName || column.label)}
               </TableCell>
-            ))}
+              );
+            })}
+            {renderActions && <TableCell key="actions">Actions</TableCell>}
           </TableRow>
         </TableHead>
         <TableBody>
           {loading && Array.from({ length: 4 }, (_, index) => (
             <TableRow key={`loading-${index}`}>
-              {columns.map((column) => (
-                <TableCell key={`loading-${index}-${column.field}`}>
+              {columns.map((column, columnIndex) => (
+                <TableCell key={`loading-${index}-${getColumnField(column) || columnIndex}`}>
                   <Skeleton height={24} />
                 </TableCell>
               ))}
+              {renderActions && <TableCell key={`loading-${index}-actions`}><Skeleton height={24} /></TableCell>}
             </TableRow>
           ))}
-          {rows.map((row, index) => (
-            <TableRow key={getRowId ? getRowId(row) : row.id || index} hover>
-              {columns.map((column) => (
-                <TableCell key={`${getRowId ? getRowId(row) : row.id || index}-${column.field}`}>
-                  {column.render ? column.render(row[column.field], row) : row[column.field]}
+          {tableRows.map((row, index) => {
+            const rowKey = getRowKey(row, index);
+
+            return (
+            <TableRow key={rowKey} hover>
+              {columns.map((column, columnIndex) => {
+                const field = getColumnField(column);
+
+                return (
+                <TableCell key={`${rowKey}-${field || columnIndex}`}>
+                  {column.render ? column.render(row[field], row) : row[field]}
                 </TableCell>
-              ))}
+                );
+              })}
+              {renderActions && <TableCell key={`${rowKey}-actions`}>{renderActions(row)}</TableCell>}
             </TableRow>
-          ))}
+            );
+          })}
         </TableBody>
       </Table>
     </TableContainer>
