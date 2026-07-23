@@ -38,6 +38,15 @@ import {
   humanizeValue,
 } from '../../utils/formatters';
 
+const cardHoverSx = {
+  transition: 'all 0.25s ease',
+  '&:hover': {
+    transform: 'translateY(-6px) scale(1.02)',
+    boxShadow: '0 10px 30px rgba(0, 0, 0, 0.15)',
+    cursor: 'pointer',
+  },
+};
+
 const messages = [
   'Great projects begin with organized teams.',
   'Progress grows when teams work together.',
@@ -263,7 +272,7 @@ function Dashboard() {
   return (
     <Box sx={{ width: '100%', maxWidth: 1450, mx: 'auto', p: { xs: 1, md: 2 } }}>
       <Paper
-        sx={{
+        sx={{ ...cardHoverSx,
           p: { xs: 2, md: 2.5 },
           borderRadius: 2,
           mb: 3,
@@ -317,7 +326,7 @@ function Dashboard() {
       </Grid>
 
       <Paper
-        sx={{
+        sx={{...cardHoverSx,
           p: 3,
           borderRadius: 2,
           mt: 3,
@@ -352,7 +361,7 @@ function Dashboard() {
 
       <Grid container spacing={3} sx={{ mt: 1 }}>
         <Grid item xs={12} lg={6}>
-          <Paper sx={{ p: 3, borderRadius: 2, height: '100%' }}>
+          <Paper sx={{ ...cardHoverSx, p: 3, borderRadius: 2, height: '100%' }}>
             <Typography color="#719430" sx={{ mb: 2 }} variant="h6" fontWeight={800}>
               Recent Activity
             </Typography>
@@ -378,7 +387,7 @@ function Dashboard() {
         </Grid>
 
         <Grid item xs={12} lg={6}>
-          <Paper sx={{ p: 3, borderRadius: 2, height: '100%' }}>
+          <Paper sx={{ ...cardHoverSx, p: 3, borderRadius: 2, height: '100%' }}>
             <Stack direction="row" alignItems="center" justifyContent="space-between" spacing={2} sx={{ mb: 2 }}>
               <Typography color="#719430" variant="h6" fontWeight={800}>
                 Upcoming Deadlines
@@ -424,7 +433,7 @@ function Dashboard() {
 
       <Grid container spacing={3} sx={{ mt: 0 }}>
         <Grid item xs={12} lg={7}>
-          <Paper sx={{ p: 3, borderRadius: 2, height: '100%' }}>
+          <Paper sx={{ ...cardHoverSx,  p: 3, borderRadius: 2, height: '100%' }}>
             <Stack direction="row" justifyContent="space-between" alignItems="center" spacing={2} sx={{ mb: 2 }}>
               <Typography color="#719430" variant="h6" fontWeight={800}>
                 Project Overview
@@ -488,6 +497,14 @@ function Dashboard() {
                               {formatPercent(completionRate)}
                             </Typography>
                           </Stack>
+                          <chip 
+                          label={project.status}
+                          size="small"
+                          variant="filled"
+                          sx={{
+                            bgcolor:"#719430", color:"#ffffff", fontWeight:700, fontSize:"0.75rem", mt:0.5, px:1.5, borderRadius:1.5,
+                          }}
+                          />
                           <LinearProgress variant="determinate" value={completionRate} sx={{ mt: 0.75, borderRadius: 2, height: 7 }} />
                         </>
                       )}
@@ -502,7 +519,7 @@ function Dashboard() {
         </Grid>
 
         <Grid item xs={12} lg={5}>
-          <Paper sx={{ p: 3, borderRadius: 2, height: '100%' }}>
+          <Paper sx={{ ...cardHoverSx, p: 3, borderRadius: 2, height: '100%' }}>
             <Typography color="#719430" sx={{ mb: 2 }} variant="h6" fontWeight={800}>
               Team Overview
             </Typography>
@@ -550,7 +567,7 @@ function Dashboard() {
         </Grid>
       </Grid>
 
-      <Paper sx={{ p: 3, borderRadius: 2, mt: 3, bgcolor: '#ffffff', textAlign: 'center' }}>
+      <Paper sx={{ ...cardHoverSx, p: 3, borderRadius: 2, mt: 3, bgcolor: '#ffffff', textAlign: 'center' }}>
         <Typography fontWeight={800} color="#719430">"{messages[messageIndex]}"</Typography>
         <Typography sx={{ mt: 1.5 }} color="#000000">
           Keep project tasks updated regularly to improve collaboration and track progress accurately.

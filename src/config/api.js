@@ -2,7 +2,7 @@ function normalizeApiBaseUrl(value) {
   const trimmed = (value || '').trim();
 
   if (!trimmed) {
-    throw new Error('Missing VITE_API_BASE_URL. Set it to the Laravel API base URL, for example http://progress.test/api/v1.');
+    throw new Error('Missing VITE_API_BASE_URL. Set it to the Laravel API , for example http://progress.test/api/v1.');
   }
 
   return trimmed.replace(/\/+$/, '');

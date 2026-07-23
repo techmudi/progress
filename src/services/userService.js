@@ -1,6 +1,8 @@
 import { httpClient } from './httpClient';
 import { omitBlankFields } from '../utils/queryParams';
 
+
+
 function collectionResult(response) {
   return {
     items: response.data || [],
