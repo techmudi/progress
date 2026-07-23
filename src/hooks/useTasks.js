@@ -10,8 +10,8 @@ export function useTasks() {
     setLoading(true);
     setError(null);
     try {
-      const data = await fetchTasks();
-      setTasks(data);
+      const result = await fetchTasks();
+      setTasks(result.data || []);
     } catch (err) {
       setError(err.message);
     } finally {
