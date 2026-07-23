@@ -2,9 +2,15 @@ import { useState } from "react";
 import { useTasks } from "../../hooks/useTasks";
 import DataTable from "../../components/common/DataTable";
 import SearchBar from "../../components/common/SearchBar";
-import { Button } from "@mui/material";
-import Modal from "../../components/common/Modal";
-import FormInput from "../../components/common/FormInput";
+import {
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  MenuItem,
+  TextField,
+} from "@mui/material";
 
 
 
@@ -102,40 +108,57 @@ export default function AllTasks() {
       />
 
       {editingTask && (
-        <Modal title="Edit Task" onClose={() => setEditingTask(null)}>
-          <form onSubmit={handleEdit} className="form">
+        <Dialog open onClose={() => setEditingTask(null)} fullWidth maxWidth="sm">
+          <DialogTitle>Edit Task</DialogTitle>
+          <form onSubmit={handleEdit}>
+            <DialogContent>
             {apiError && <p style={{ color: "red" }}>{apiError}</p>}
-            <FormInput
+            <TextField
               label="Title"
               value={editingTask.title}
-              onChange={(v) => setEditingTask({ ...editingTask, title: v })}
+              onChange={(e) => setEditingTask({ ...editingTask, title: e.target.value })}
               required
+              fullWidth
+              margin="normal"
             />
-            <FormInput
+            <TextField
               label="Description"
               value={editingTask.description}
-              onChange={(v) => setEditingTask({ ...editingTask, description: v })}
+              onChange={(e) => setEditingTask({ ...editingTask, description: e.target.value })}
+              fullWidth
+              margin="normal"
             />
-            <FormInput
+            <TextField
               label="Assigned To"
               value={editingTask.assignedTo}
-              onChange={(v) => setEditingTask({ ...editingTask, assignedTo: v })}
+              onChange={(e) => setEditingTask({ ...editingTask, assignedTo: e.target.value })}
               required
+              fullWidth
+              margin="normal"
             />
-            <FormInput
+            <TextField
               label="Status"
-              type="select"
+              select
               value={editingTask.status}
-              onChange={(v) => setEditingTask({ ...editingTask, status: v })}
-              options={["Pending", "In Progress", "Done"]}
+              onChange={(e) => setEditingTask({ ...editingTask, status: e.target.value })}
               required
-            />
-            <Button type="submit">
-            {saving ? "Saving..." : "Save Changes"}
-            </Button>
-        </form>
-        </Modal>
-    )}
+              fullWidth
+              margin="normal"
+            >
+              {["Pending", "In Progress", "Done"].map((status) => (
+                <MenuItem key={status} value={status}>{status}</MenuItem>
+              ))}
+            </TextField>
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={() => setEditingTask(null)} disabled={saving}>Cancel</Button>
+              <Button type="submit" variant="contained" disabled={saving}>
+                {saving ? "Saving..." : "Save Changes"}
+              </Button>
+            </DialogActions>
+          </form>
+        </Dialog>
+      )}
     </div>
 );
 }
