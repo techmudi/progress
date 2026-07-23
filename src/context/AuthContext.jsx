@@ -1,8 +1,10 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import {
   clearStoredSession,
+  ensureDevelopmentSession,
   getAccessToken,
   getStoredUser,
+  isDevelopmentSession,
   setAccessToken,
   setStoredUser,
 } from '../services/authStorage';
@@ -16,6 +18,9 @@ function includesAny(values = [], required = []) {
 }
 
 export function AuthProvider({ children }) {
+  // In Vite development, seed a local mock admin session before auth state is read.
+  // Production builds and tests never enter this branch.
+  ensureDevelopmentSession();
   const [token, setToken] = useState(() => getAccessToken());
   const [user, setUser] = useState(() => getStoredUser());
   const [isRestoringSession, setIsRestoringSession] = useState(true);
@@ -65,6 +70,11 @@ export function AuthProvider({ children }) {
       }
 
       setToken(storedToken);
+
+      if (isDevelopmentSession(storedToken)) {
+        setIsRestoringSession(false);
+        return;
+      }
 
       try {
         await refreshCurrentUser({ signal: controller.signal });
