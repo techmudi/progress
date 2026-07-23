@@ -138,8 +138,7 @@ export default function AllTasks() {
             />
             <TextField
               label="Status"
-              select
-              value={editingTask.status}
+              select value={editingTask.status}
               onChange={(e) => setEditingTask({ ...editingTask, status: e.target.value })}
               required
               fullWidth
