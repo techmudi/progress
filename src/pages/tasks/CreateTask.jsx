@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { Button, MenuItem, TextField } from "@mui/material";
 import { useTasks } from "../../hooks/useTasks";
 
 const emptyTask = { title: "", description: "", assignedTo: "", status: "Pending" };
@@ -36,18 +37,45 @@ export default function CreateTask() {
       {saved && <p className="success-message">Task created! Redirecting...</p>}
       {error && <p style={{ color: "red" }}>{error}</p>}
       <form onSubmit={handleSubmit} className="form">
-        <FormInput label="Title" value={form.title} onChange={update("title")} required />
-        <FormInput label="Description" value={form.description} onChange={update("description")} />
-        <FormInput label="Assigned To" value={form.assignedTo} onChange={update("assignedTo")} required />
-        <FormInput
-          label="Status"
-          type="select"
-          value={form.status}
-          onChange={update("status")}
-          options={["Pending", "In Progress", "Done"]}
+        <TextField
+          label="Title"
+          value={form.title}
+          onChange={(e) => update("title")(e.target.value)}
           required
+          fullWidth
+          margin="normal"
         />
-        <Button type="submit">{saving ? "Saving..." : "Create Task"}</Button>
+        <TextField
+          label="Description"
+          value={form.description}
+          onChange={(e) => update("description")(e.target.value)}
+          fullWidth
+          margin="normal"
+        />
+        <TextField
+          label="Assigned To"
+          value={form.assignedTo}
+          onChange={(e) => update("assignedTo")(e.target.value)}
+          required
+          fullWidth
+          margin="normal"
+        />
+        <TextField
+          label="Status"
+          select
+          value={form.status}
+          onChange={(e) => update("status")(e.target.value)}
+          required
+          fullWidth
+          margin="normal"
+        >
+          {["Pending", "In Progress", "Done"].map((status) => (
+            <MenuItem key={status} value={status}>{status}</MenuItem>
+          ))}
+        </TextField>
+        <Button type="submit" variant="contained" disabled={saving}>
+          {saving ? "Saving..." : "Create Task"}
+        </Button>
       </form>
     </div>
   );
